@@ -1,0 +1,12 @@
+services:
+  backend.izdrail.com:
+    build:
+      context: .
+    container_name: trending.izdrail.com
+    image: izdrail/trending.izdrail.com:latest
+    restart: always
+    ports:
+      - "1099:1099"   # Backend service port
+    volumes:
+      - .:/home/trending/
+    environment:
