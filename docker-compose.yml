@@ -1,5 +1,5 @@
 services:
-  backend.izdrail.com:
+  trending.izdrail.com:
     build:
       context: .
     container_name: trending.izdrail.com
@@ -9,4 +9,3 @@ services:
       - "1099:1099"   # Backend service port
     volumes:
       - .:/home/trending/
-    environment:
