@@ -27,7 +27,7 @@ from cachetools import TTLCache
 class Settings:
     APP_TITLE = "TrendsPy API"
     APP_DESCRIPTION = "An API wrapper for Google Trends analysis using TrendsPy"
-    APP_VERSION = "1.0.0"
+    APP_VERSION = "0.0.1"
     DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./trends.db")
     CACHE_TTL = int(os.getenv("CACHE_TTL", 3600))  # Cache time-to-live in seconds
     CACHE_MAXSIZE = int(os.getenv("CACHE_MAXSIZE", 100))  # Maximum cache size
