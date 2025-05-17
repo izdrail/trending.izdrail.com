@@ -12,6 +12,7 @@ RUN apt update && apt install -y \
     npm \
     mlocate \
     net-tools \
+    ffmpeg \
     software-properties-common \
     openjdk-17-jdk \
     maven \
@@ -21,9 +22,6 @@ RUN apt update && apt install -y \
 # Install pip packages and supervisord
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install supervisor pipx 
-
-
-
 
 WORKDIR /home/skraper
 RUN git clone https://github.com/sokomishalov/skraper.git .
@@ -39,8 +37,9 @@ WORKDIR /home/trending
 # Install Python packages
 COPY ./requirements.txt /home/trending/requirements.txt
 RUN pip install --no-cache-dir --upgrade -r /home/trending/requirements.txt \
-    && pip install trendspy justext text2emotion pymupdf4llm python-multipart sqlalchemy yake fastapi_versioning tls_client uvicorn gnews \
+    && pip install trendspy justext text2emotion pymupdf4llm python-multipart sqlalchemy spacy spacy-llm yake fastapi_versioning tls_client uvicorn gnews \
     && python3 -m nltk.downloader -d /usr/local/share/nltk_data wordnet punkt stopwords vader_lexicon \
+    && python3 -m spacy download en_core_web_md \
     && python3 -m textblob.download_corpora
 
 

@@ -19,10 +19,10 @@ from functools import lru_cache
 import pandas as pd
 import uuid
 from pathlib import Path
-import asyncio
+
 from fastapi_versioning import VersionedFastAPI, version
 from cachetools import TTLCache
-
+from scraper_service import ScraperService
 # ----- CONFIGURATION -----
 class Settings:
     APP_TITLE = "TrendsPy API"
@@ -31,7 +31,7 @@ class Settings:
     DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./trends.db")
     CACHE_TTL = int(os.getenv("CACHE_TTL", 3600))  # Cache time-to-live in seconds
     CACHE_MAXSIZE = int(os.getenv("CACHE_MAXSIZE", 100))  # Maximum cache size
-    RATE_LIMIT_PERIOD = int(os.getenv("RATE_LIMIT_PERIOD", 60))  # Period in seconds
+    RATE_LIMIT_PERIOD = int(os.getenv("RATE_LIMIT_PERIOD", 10))  # Period in seconds
     RATE_LIMIT_REQUESTS = int(os.getenv("RATE_LIMIT_REQUESTS", 30))  # Max requests per period
     LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
     DATA_DIR = os.getenv("DATA_DIR", "./data")
@@ -185,6 +185,13 @@ app = FastAPI(
     description=settings.APP_DESCRIPTION,
     version=settings.APP_VERSION,
 )
+
+
+
+scraper_service = ScraperService()
+app.include_router(scraper_service.router)
+
+
 
 # Enable CORS
 app.add_middleware(
@@ -1087,6 +1094,7 @@ async def get_api_stats_v1(
             for date, count in requests_by_day
         ]
     }
+
 
 @app.delete("/api/v1/cache")
 @version(1)
