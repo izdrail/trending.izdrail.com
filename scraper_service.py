@@ -42,7 +42,7 @@ class ScraperService:
         
         @validator('network')
         def validate_network(cls, value: str) -> str:
-            allowed_networks = {'twitter', 'reddit', 'instagram'}
+            allowed_networks = {'twitter', 'reddit', 'instagram', 'facebook', '9gag'}
             if value.lower() not in allowed_networks:
                 raise ValueError(f"Network must be one of: {', '.join(allowed_networks)}")
             return value.lower()
@@ -177,6 +177,7 @@ class ScraperService:
             try:
                 with open(file_path, 'r') as json_file:
                     json_data = json.load(json_file)
+                    print(json_data)
                 
                 # Enrich the data
                 enriched_data = self.enrich_data(json_data).dict()
